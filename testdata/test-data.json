@@ -1,1 +1,12 @@
-{}
+{
+  "searchFiltersTableInRealTimeWhenTypingEmailFragment": {
+    "typeInSearchUserInput": "@"
+  },
+  "searchIsCaseInsensitiveForEmailFragmentsComVsCom": {
+    "typeComInSearchUser": "com",
+    "typeComInSearchUser2": "COM"
+  },
+  "searchShowsEmptyStateWhenNoUsersMatchTheQuery": {
+    "enterANonMatchingQuery": "zzzzzxxyy"
+  }
+}
