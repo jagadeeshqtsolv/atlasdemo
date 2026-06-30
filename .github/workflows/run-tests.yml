@@ -1,0 +1,133 @@
+# .github/workflows/run-tests.yml
+# Triggered by Autonix via workflow_dispatch.
+# Requires: Node.js, npm, and test dependencies installed.
+name: run-tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Feature branch to check out and run tests on"
+        required: false
+        default: ""
+      spec_paths:
+        description: "Space-separated spec file paths to run"
+        required: false
+        default: ""
+      environment:
+        description: "Environment slug (e.g. staging)"
+        required: false
+        default: ""
+      grep:
+        description: "Test title filter (e.g. @smoke)"
+        required: false
+        default: ""
+      callback_url:
+        description: "Autonix webhook URL to post results back"
+        required: true
+      run_id:
+        description: "Autonix run ID"
+        required: true
+      auth_state_url:
+        description: "URL to fetch Playwright storageState JSON (auth file)"
+        required: false
+        default: ""
+      auth_state_filename:
+        description: "Filename to write inside .auth/ (e.g. auth.json)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    env:
+      AUTONIX_REGISTRY_TOKEN: ${{ secrets.AUTONIX_REGISTRY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure Autonix registry
+        run: |
+          npm config set @autonix:registry https://artifact-keeper.qtsolvdev.com/npm/qa-automation-libraries/
+          npm config set "//artifact-keeper.qtsolvdev.com/npm/qa-automation-libraries/:_authToken" "$AUTONIX_REGISTRY_TOKEN"
+
+      - name: Install dependencies
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Write auth state
+        if: ${{ inputs.auth_state_url != '' && inputs.auth_state_filename != '' }}
+        run: |
+          mkdir -p .auth
+          RESPONSE=$(curl -sf "${{ inputs.auth_state_url }}")
+          echo "$RESPONSE" | jq -r '.content' > ".auth/${{ inputs.auth_state_filename }}"
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        env:
+          AUTOM_ENVIRONMENT: ${{ inputs.environment }}
+          TEST_ENV: ${{ inputs.environment }}
+        run: |
+          SPEC_PATHS_ARG="${{ inputs.spec_paths }}"
+          GREP_PATTERN="${{ inputs.grep }}"
+          if [ -n "$GREP_PATTERN" ]; then
+            npx playwright test $SPEC_PATHS_ARG --grep "$GREP_PATTERN"
+          else
+            npx playwright test $SPEC_PATHS_ARG
+          fi
+        continue-on-error: true
+        id: run
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ inputs.run_id }}
+          path: |
+            playwright-report/
+            logs/playwright-report.json
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Send test results to Autonix
+        if: always()
+        run: |
+          if [ -f logs/playwright-report.json ]; then
+            FILE_SIZE=$(wc -c < logs/playwright-report.json)
+            if [ "$FILE_SIZE" -le 5242880 ]; then
+              RESULTS=$(base64 -w 0 logs/playwright-report.json 2>/dev/null || base64 logs/playwright-report.json | tr -d '\n')
+              curl -s -o /dev/null -X POST "${{ inputs.callback_url }}&type=results" \
+                -H "Content-Type: application/json" \
+                --max-time 30 \
+                -d "{\"results\":\"${RESULTS}\"}" || true
+            fi
+          fi
+
+      - name: Report results to Autonix
+        if: always()
+        run: |
+          STATUS="passed"
+          if [ "${{ steps.run.outcome }}" != "success" ]; then
+            STATUS="failed"
+          fi
+          PAYLOAD="{\"status\":\"${STATUS}\",\"run_id\":\"${{ inputs.run_id }}\",\"pipelineUrl\":\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+          for attempt in 1 2 3 4 5; do
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ inputs.callback_url }}" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD")
+            echo "Attempt $attempt — HTTP $HTTP_CODE"
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "Callback delivered."
+              break
+            fi
+            [ $attempt -lt 5 ] && sleep $((attempt * 10))
+          done
+          true
