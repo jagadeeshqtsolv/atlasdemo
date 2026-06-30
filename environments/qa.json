@@ -1,7 +1,7 @@
 {
-  "baseURL": "https://example.com",
-  "username": "admin@example.com",
-  "password": "changeme",
+  "name": "qa",
+  "slug": "qa",
+  "baseURL": "https://qa-atlas.qtsolvdev.com/login?next=%2Fadmin",
   "browser": "chromium",
   "headless": true,
   "timeout": 30000,
