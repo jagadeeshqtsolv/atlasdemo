@@ -62,7 +62,7 @@ test('Verify user table renders 5 columns in the exact required order', { tag: [
     }, { timeout: 15000 }).toBeGreaterThan(0);
   });
 
-  const headers = ['User information', 'Role', 'Status', 'Last active', 'Account Access'];
+  const headers = ['User information', 'Role', 'Status', 'Last active', 'Portal Access'];
 
   await test.step('Assert count — Table has exactly 5 required columns available', async () => {
     let present = 0;
@@ -97,8 +97,8 @@ test('Verify user table renders 5 columns in the exact required order', { tag: [
     expect(col).toBeDefined();
   });
 
-  await test.step("Assert text — Column 5 is 'Account Access'", async () => {
-    const col = await userManagementPage.getOrganizationUsersTableColumn('Account Access');
+  await test.step("Assert text — Column 5 is 'Portal Access'", async () => {
+    const col = await userManagementPage.getOrganizationUsersTableColumn('Portal Access');
     expect(col).toBeDefined();
   });
 });
@@ -167,8 +167,9 @@ test('At least one user shows initials monogram avatar with email displayed belo
   });
 
   await test.step('Assert content — Email is shown for a user', async () => {
-    const tableText = await userManagementPage.getOrganizationUsersTableText();
-    expect(tableText).toMatch(/@/);
+    const col = await userManagementPage.getOrganizationUsersTableColumn('User information');
+    const text = Array.isArray(col) ? col.join(' ') : String(col ?? '');
+    expect(text).toMatch(/@/);
   });
 });
 
