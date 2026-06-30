@@ -1,0 +1,58 @@
+{
+  "id": "table-scrollable-when-overflow",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "table-scrollable-when-overflow",
+    "title": "User table is scrollable when rows exceed viewport (25th row reachable)",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for table rows to render",
+        "locatorHint": "[data-testid='user-row']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least 25 rows on the current page",
+        "locatorHint": "[data-testid='user-row']"
+      },
+      {
+        "id": "s5",
+        "action": "scrollIntoView",
+        "targetDescription": "Scroll to the 25th row",
+        "locatorHint": "[data-testid='user-table'] tbody tr:nth-child(25)"
+      },
+      {
+        "id": "s6",
+        "action": "assertVisible",
+        "targetDescription": "25th row is visible in viewport",
+        "locatorHint": "[data-testid='user-table'] tbody tr:nth-child(25)"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

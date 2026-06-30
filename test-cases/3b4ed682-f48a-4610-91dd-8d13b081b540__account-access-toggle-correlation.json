@@ -1,0 +1,58 @@
+{
+  "id": "account-access-toggle-correlation",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "account-access-toggle-correlation",
+    "title": "Account Access toggles reflect access state and correlate with Status",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for user table rows",
+        "locatorHint": "[data-testid='user-row']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertChecked",
+        "targetDescription": "Active user with access enabled has ON toggle",
+        "locatorHint": "[data-testid='user-row'][data-status='active'][data-access='on'] [data-testid='access-toggle']"
+      },
+      {
+        "id": "s5",
+        "action": "assertUnchecked",
+        "targetDescription": "Active user with access revoked has OFF toggle",
+        "locatorHint": "[data-testid='user-row'][data-status='active'][data-access='off'] [data-testid='access-toggle']"
+      },
+      {
+        "id": "s6",
+        "action": "assertUnchecked",
+        "targetDescription": "Inactive user's toggle is OFF",
+        "locatorHint": "[data-testid='user-row'][data-status='inactive'] [data-testid='access-toggle']"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

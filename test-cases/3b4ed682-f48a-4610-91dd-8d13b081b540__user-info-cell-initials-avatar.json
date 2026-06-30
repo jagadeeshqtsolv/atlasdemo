@@ -1,0 +1,52 @@
+{
+  "id": "user-info-cell-initials-avatar",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "user-info-cell-initials-avatar",
+    "title": "At least one user shows initials monogram avatar with email displayed below",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for user table",
+        "locatorHint": "[data-testid='user-table'] tbody",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least one initials monogram avatar is present",
+        "locatorHint": "[data-testid='user-row'] [data-testid='avatar-initials']"
+      },
+      {
+        "id": "s5",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "Email is shown for a user with initials avatar",
+        "locatorHint": "[data-testid='user-row'] [data-testid='user-email']"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

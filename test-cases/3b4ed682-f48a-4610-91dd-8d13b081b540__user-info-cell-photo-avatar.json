@@ -1,0 +1,58 @@
+{
+  "id": "user-info-cell-photo-avatar",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "user-info-cell-photo-avatar",
+    "title": "At least one user shows photo avatar; name and email are rendered",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for user table",
+        "locatorHint": "[data-testid='user-table'] tbody",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least one photo avatar is present",
+        "locatorHint": "[data-testid='user-row'] [data-testid='avatar-photo']"
+      },
+      {
+        "id": "s5",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least one user name is shown",
+        "locatorHint": "[data-testid='user-row'] [data-testid='user-name']"
+      },
+      {
+        "id": "s6",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least one email is shown",
+        "locatorHint": "[data-testid='user-row'] [data-testid='user-email']"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

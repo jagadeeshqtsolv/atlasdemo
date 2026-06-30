@@ -1,0 +1,84 @@
+{
+  "id": "landing-default-tab-and-header",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "landing-default-tab-and-header",
+    "title": "Admin page loads with User Management active and header controls visible",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "locatorHint": "URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login button",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for User Management header to appear",
+        "locatorHint": "[data-testid='user-search']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertVisible",
+        "targetDescription": "User Management tab is visible",
+        "locatorHint": "[role='tab'][name='User Management']"
+      },
+      {
+        "id": "s5",
+        "action": "assertSelected",
+        "targetDescription": "User Management tab is selected by default",
+        "locatorHint": "[role='tab'][name='User Management']"
+      },
+      {
+        "id": "s6",
+        "action": "assertVisible",
+        "targetDescription": "Roles & Access tab is visible",
+        "locatorHint": "[role='tab'][name='Roles & Access']"
+      },
+      {
+        "id": "s7",
+        "action": "assertVisible",
+        "targetDescription": "Audit Log tab is visible",
+        "locatorHint": "[role='tab'][name='Audit Log']"
+      },
+      {
+        "id": "s8",
+        "action": "assertContainsText",
+        "targetDescription": "Header shows total users count label",
+        "locatorHint": "[data-testid='user-count']",
+        "assertion": "Users"
+      },
+      {
+        "id": "s9",
+        "action": "assertVisible",
+        "targetDescription": "Search user input is visible",
+        "locatorHint": "[data-testid='user-search']"
+      },
+      {
+        "id": "s10",
+        "action": "assertVisible",
+        "targetDescription": "Invite user button is visible",
+        "locatorHint": "[data-testid='invite-user-btn']"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

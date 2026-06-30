@@ -1,0 +1,60 @@
+{
+  "id": "search-no-results-message",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "search-no-results-message",
+    "title": "Search shows empty state when no users match the query",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for search input",
+        "locatorHint": "[data-testid='user-search']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "fill",
+        "targetDescription": "Enter a non-matching query",
+        "locatorHint": "[data-testid='user-search']",
+        "value": "zzzzzxxyy"
+      },
+      {
+        "id": "s5",
+        "action": "wait",
+        "targetDescription": "Wait for filtering",
+        "value": "400"
+      },
+      {
+        "id": "s6",
+        "action": "assertContainsText",
+        "targetDescription": "Empty state message appears with query echoed",
+        "locatorHint": "[data-testid='empty-state']",
+        "assertion": "No users found for 'zzzzzxxyy'."
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

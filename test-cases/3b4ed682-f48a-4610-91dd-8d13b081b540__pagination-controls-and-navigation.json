@@ -1,0 +1,87 @@
+{
+  "id": "pagination-controls-and-navigation",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "pagination-controls-and-navigation",
+    "title": "Pagination renders for >25 users and Next/Prev navigation updates page number",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for pagination controls (accounts with >25 users)",
+        "locatorHint": "[data-testid='pagination']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertText",
+        "targetDescription": "Initially on page 1",
+        "locatorHint": "[data-testid='page-number']",
+        "assertion": "1"
+      },
+      {
+        "id": "s5",
+        "action": "tap",
+        "targetDescription": "Go to next page",
+        "locatorHint": "[data-testid='page-next']"
+      },
+      {
+        "id": "s6",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for page number to update to 2",
+        "locatorHint": "[data-testid='page-number']",
+        "value": "5000"
+      },
+      {
+        "id": "s7",
+        "action": "assertText",
+        "targetDescription": "Now on page 2",
+        "locatorHint": "[data-testid='page-number']",
+        "assertion": "2"
+      },
+      {
+        "id": "s8",
+        "action": "tap",
+        "targetDescription": "Return to previous page",
+        "locatorHint": "[data-testid='page-prev']"
+      },
+      {
+        "id": "s9",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for page number to revert to 1",
+        "locatorHint": "[data-testid='page-number']",
+        "value": "5000"
+      },
+      {
+        "id": "s10",
+        "action": "assertText",
+        "targetDescription": "Back on page 1",
+        "locatorHint": "[data-testid='page-number']",
+        "assertion": "1"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

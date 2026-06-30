@@ -1,0 +1,54 @@
+{
+  "id": "last-active-values",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "last-active-values",
+    "title": "Last active shows relative time or 'Never' for never-logged-in users",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for user table",
+        "locatorHint": "[data-testid='user-table'] tbody",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertContainsText",
+        "targetDescription": "Relative time string like 'ago' appears somewhere in table",
+        "locatorHint": "[data-testid='user-table']",
+        "assertion": "ago"
+      },
+      {
+        "id": "s5",
+        "action": "assertContainsText",
+        "targetDescription": "'Never' appears for a user who has not logged in",
+        "locatorHint": "[data-testid='user-table']",
+        "assertion": "Never"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

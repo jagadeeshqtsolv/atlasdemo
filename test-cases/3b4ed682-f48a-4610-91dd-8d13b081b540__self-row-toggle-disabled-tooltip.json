@@ -1,0 +1,66 @@
+{
+  "id": "self-row-toggle-disabled-tooltip",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "self-row-toggle-disabled-tooltip",
+    "title": "Current admin's Account Access toggle is disabled with tooltip on hover",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for current user row",
+        "locatorHint": "[data-testid='current-user-row']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertDisabled",
+        "targetDescription": "Self access toggle is disabled",
+        "locatorHint": "[data-testid='current-user-row'] [data-testid='access-toggle']"
+      },
+      {
+        "id": "s5",
+        "action": "hover",
+        "targetDescription": "Hover on disabled toggle to reveal tooltip",
+        "locatorHint": "[data-testid='current-user-row'] [data-testid='access-toggle']"
+      },
+      {
+        "id": "s6",
+        "action": "waitForVisible",
+        "targetDescription": "Tooltip appears",
+        "locatorHint": "[role='tooltip']",
+        "value": "3000"
+      },
+      {
+        "id": "s7",
+        "action": "assertText",
+        "targetDescription": "Tooltip text matches requirement",
+        "locatorHint": "[role='tooltip']",
+        "assertion": "You cannot revoke your own access."
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

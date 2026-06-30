@@ -1,0 +1,81 @@
+{
+  "id": "table-columns-order",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "table-columns-order",
+    "title": "Verify user table renders 5 columns in the exact required order",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for table header",
+        "locatorHint": "[data-testid='user-table'] thead",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "assertCount",
+        "targetDescription": "Table has exactly 5 header columns",
+        "locatorHint": "[data-testid='user-table'] thead th"
+      },
+      {
+        "id": "s5",
+        "action": "assertText",
+        "targetDescription": "Column 1 is 'User information'",
+        "locatorHint": "[data-testid='user-table'] thead th:nth-child(1)",
+        "assertion": "User information"
+      },
+      {
+        "id": "s6",
+        "action": "assertText",
+        "targetDescription": "Column 2 is 'Role'",
+        "locatorHint": "[data-testid='user-table'] thead th:nth-child(2)",
+        "assertion": "Role"
+      },
+      {
+        "id": "s7",
+        "action": "assertText",
+        "targetDescription": "Column 3 is 'Status'",
+        "locatorHint": "[data-testid='user-table'] thead th:nth-child(3)",
+        "assertion": "Status"
+      },
+      {
+        "id": "s8",
+        "action": "assertText",
+        "targetDescription": "Column 4 is 'Last active'",
+        "locatorHint": "[data-testid='user-table'] thead th:nth-child(4)",
+        "assertion": "Last active"
+      },
+      {
+        "id": "s9",
+        "action": "assertText",
+        "targetDescription": "Column 5 is 'Account Access'",
+        "locatorHint": "[data-testid='user-table'] thead th:nth-child(5)",
+        "assertion": "Account Access"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}

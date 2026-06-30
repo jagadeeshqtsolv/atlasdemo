@@ -1,0 +1,65 @@
+{
+  "id": "search-email-fragment-at-symbol",
+  "testPlanId": "3b4ed682-f48a-4610-91dd-8d13b081b540",
+  "requirementId": "7f203695-9ee4-4032-80a3-d1b50786b850",
+  "suiteName": "Admin User Management — Smoke",
+  "case": {
+    "id": "search-email-fragment-at-symbol",
+    "title": "Search filters table in real time when typing email fragment '@'",
+    "priority": "P0",
+    "platforms": [
+      "chrome"
+    ],
+    "preconditions": [],
+    "steps": [
+      {
+        "id": "s1",
+        "action": "openUrl",
+        "targetDescription": "Open Admin base URL",
+        "value": "https://qa-atlas.qtsolvdev.com/admin"
+      },
+      {
+        "id": "s2",
+        "action": "tap",
+        "targetDescription": "Click Salesforce login",
+        "locatorHint": "[data-testid='salesforce-login-btn']"
+      },
+      {
+        "id": "s3",
+        "action": "waitForVisible",
+        "targetDescription": "Wait for search input",
+        "locatorHint": "[data-testid='user-search']",
+        "value": "10000"
+      },
+      {
+        "id": "s4",
+        "action": "fill",
+        "targetDescription": "Type '@' in Search user input",
+        "locatorHint": "[data-testid='user-search']",
+        "value": "@"
+      },
+      {
+        "id": "s5",
+        "action": "wait",
+        "targetDescription": "Wait for real-time filtering to apply",
+        "value": "400"
+      },
+      {
+        "id": "s6",
+        "action": "assertHidden",
+        "targetDescription": "No empty-state message while matches exist",
+        "locatorHint": "[data-testid='empty-state']"
+      },
+      {
+        "id": "s7",
+        "action": "assertCountGreaterThan",
+        "targetDescription": "At least one user row is displayed after filtering",
+        "locatorHint": "[data-testid='user-row']"
+      }
+    ],
+    "tags": [
+      "@smoke",
+      "@regression"
+    ]
+  }
+}
